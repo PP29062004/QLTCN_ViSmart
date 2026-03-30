@@ -1,0 +1,106 @@
+﻿@model QLTCCN.Models.Data.NoKhoanVay
+
+<div class="container my-5">
+    <h2 class="text-center fw-bold mb-5" style="color: #f0b90b;"><i class="fas fa-hand-holding-usd me-2"></i>Chi tiết nợ/khoản vay</h2>
+
+    <!-- Card chi tiết nợ/khoản vay -->
+    <div class="card shadow-lg border-0 hover-shadow" style="background-color: #1e1e1e; color: #f0f0f0;">
+        <div class="card-header py-3 bg-gradient" style="background: linear-gradient(45deg, #2B2B2B, #3C3C3C);">
+            <h4 class="mb-0 text-gold fw-semibold"><i class="fas fa-info-circle me-2"></i>Thông tin khoản vay</h4>
+        </div>
+        <div class="card-body p-4">
+            <dl class="row mb-4">
+                <dt class="col-sm-3 fw-semibold text-white">Tên khoản vay</dt>
+                <dd class="col-sm-9 text-white">@Model.GhiChu</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Số tiền</dt>
+                <dd class="col-sm-9 text-danger">@Model.SoTien.ToString("N0") VNĐ</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Lãi suất</dt>
+                <dd class="col-sm-9 text-white">@Model.LaiSuat%</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Kỳ hạn</dt>
+                <dd class="col-sm-9 text-white">@Model.KyHan tháng</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Ngày bắt đầu</dt>
+                <dd class="col-sm-9 text-white">@Model.NgayBatDau.ToString("dd/MM/yyyy")</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Ngày đáo hạn</dt>
+                <dd class="col-sm-9 text-white">@Model.NgayBatDau.AddMonths(Model.KyHan).ToString("dd/MM/yyyy")</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Trạng thái</dt>
+                <dd class="col-sm-9 text-white">@Model.TrangThai</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Người dùng</dt>
+                <dd class="col-sm-9 text-white">@Model.NguoiDung?.FullName (@Model.NguoiDung?.Email)</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Ghi chú</dt>
+                <dd class="col-sm-9 text-white">@Model.GhiChu</dd>
+            </dl>
+
+            <!-- Lịch sử trả nợ -->
+            <h4 class="text-gold fw-semibold mb-3"><i class="fas fa-history me-2"></i>Lịch sử trả nợ</h4>
+            @if (Model.LichSuTraNos != null && Model.LichSuTraNos.Any())
+            {
+                <table class="table table-bordered table-dark">
+                    <thead>
+                        <tr>
+                            <th>Ngày trả</th>
+                            <th>Số tiền trả</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var lichSu in Model.LichSuTraNos)
+                        {
+                            <tr>
+                                <td>@lichSu.NgayTra.ToString("dd/MM/yyyy")</td>
+                                <td class="text-success">@lichSu.SoTienTra.ToString("N0") VNĐ</td>
+                                <td>@lichSu.GhiChu</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted"><i class="fas fa-exclamation-circle me-2"></i>Chưa có lịch sử trả nợ.</p>
+            }
+        </div>
+        <div class="card-footer bg-dark text-center py-3">
+            <a asp-action="Index" class="btn btn-gold rounded-pill px-4 py-2 fw-semibold hover-shadow transition-all">
+                <i class="fas fa-arrow-left me-2"></i>Quay lại
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-gold {
+        background-color: #F0B90B;
+        color: #1e1e1e;
+        border: none;
+    }
+
+        .btn-gold:hover {
+            background-color: #d9a00a;
+            color: #1e1e1e;
+        }
+
+    .border-gold {
+        border-color: #F0B90B !important;
+    }
+
+    .text-gold {
+        color: #F0B90B !important;
+    }
+
+    .hover-shadow:hover {
+        box-shadow: 0 4px 15px rgba(240, 185, 11, 0.3);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .transition-all {
+        transition: all 0.3s ease;
+    }
+</style>

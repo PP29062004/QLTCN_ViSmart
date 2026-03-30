@@ -1,0 +1,63 @@
+﻿@model QLTCCN.Models.Data.MucTieu
+
+@{
+    ViewData["Title"] = "Sửa mục tiêu";
+}
+
+<div class="container mt-5 p-4 rounded shadow bg-dark text-white">
+    <h2 class="mb-4 text-warning">🎯 Sửa mục tiêu</h2>
+
+    <form asp-action="Edit" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden" asp-for="MaMucTieu" />
+
+        <div class="form-group mb-3">
+            <label asp-for="TenMucTieu" class="form-label">Tên mục tiêu</label>
+            <input asp-for="TenMucTieu" class="form-control bg-secondary text-white border-0" />
+            <span asp-validation-for="TenMucTieu" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="SoTienMucTieu" class="form-label">Số tiền mục tiêu</label>
+            <input asp-for="SoTienMucTieu" class="form-control bg-secondary text-white border-0" type="number" step="0.01" />
+            <span asp-validation-for="SoTienMucTieu" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="SoTienHienTai" class="form-label">Số tiền hiện tại</label>
+            <input asp-for="SoTienHienTai" class="form-control bg-secondary text-white border-0" type="number" step="0.01" />
+            <span asp-validation-for="SoTienHienTai" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="MaDanhMuc" class="form-label">Danh mục</label>
+            <select asp-for="MaDanhMuc" class="form-select bg-secondary text-white border-0" asp-items="ViewBag.DanhMuc">
+                <option value="">Chọn danh mục</option>
+            </select>
+            <span asp-validation-for="MaDanhMuc" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="HanChot" class="form-label">Hạn chót</label>
+            <input asp-for="HanChot" class="form-control bg-secondary text-white border-0" type="date" />
+            <span asp-validation-for="HanChot" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="GhiChu" class="form-label">Ghi chú</label>
+            <input asp-for="GhiChu" class="form-control bg-secondary text-white border-0" />
+            <span asp-validation-for="GhiChu" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-warning">💾 Cập nhật</button>
+            <a asp-action="Index" class="btn btn-outline-light">🔙 Quay lại</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

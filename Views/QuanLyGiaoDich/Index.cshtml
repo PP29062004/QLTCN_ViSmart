@@ -1,0 +1,39 @@
+﻿<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-warning">📒 Danh Sách Giao Dịch</h2>
+    <a asp-action="Create" class="btn btn-outline-light">➕ Thêm giao dịch mới</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover table-dark rounded shadow-sm">
+        <thead class="table-gold text-dark">
+            <tr>
+                <th>Số tiền</th>
+                <th>Loại</th>
+                <th>Ngày</th>
+                <th>Tài khoản</th>
+                <th>Loại tài khoản</th>
+                <th>Danh mục</th>
+                <th>Ghi chú</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.SoTien.ToString("C")</td>
+                    <td><span class="badge bg-info text-dark">@item.LoaiGiaoDich</span></td>
+                    <td>@item.NgayGiaoDich.ToString("dd/MM/yyyy")</td>
+                    <td>@(item.TaiKhoan?.TenTaiKhoan ?? "Không có")</td>
+                    <td>@(item.TaiKhoan?.LoaiTaiKhoan ?? "Không có")</td>
+                    <td>@(item.DanhMuc?.TenDanhMuc ?? "Không có")</td>
+                    <td>@item.GhiChu</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.MaGiaoDich" class="btn btn-sm btn-outline-warning">✏️</a>
+                        <a asp-action="Delete" asp-route-id="@item.MaGiaoDich" class="btn btn-sm btn-outline-danger">🗑️</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

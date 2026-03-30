@@ -1,0 +1,85 @@
+﻿@model List<QLTCCN.Models.Data.NoKhoanVay>
+
+@{
+    ViewData["Title"] = "Danh sách khoản nợ/vay";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-gold fw-bold"><i class="fas fa-hand-holding-usd me-2"></i>Danh sách khoản nợ/vay</h2>
+        <a asp-action="Create" class="btn btn-gold rounded-pill px-4 py-2 fw-semibold hover-shadow transition-all">
+            <i class="fas fa-plus me-2"></i>Thêm khoản nợ/vay
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-dark rounded shadow-sm">
+            <thead class="table-gold text-dark">
+                <tr class="text-center">
+                    <th>Số tiền</th>
+                    <th>Lãi suất</th>
+                    <th>Kỳ hạn (tháng)</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
+                    <th>Trạng thái</th>
+                    <th>Ngày trả tiếp theo</th>
+                    <th>Ghi chú</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody class="text-white">
+                @foreach (var item in Model)
+                {
+                    <tr class="transition-all">
+                        <td>@item.SoTien.ToString("C")</td>
+                        <td>@item.LaiSuat%</td>
+                        <td>@item.KyHan</td>
+                        <td>@item.NgayBatDau.ToString("dd/MM/yyyy")</td>
+                        <td>@(item.NgayKetThuc.HasValue ? item.NgayKetThuc.Value.ToString("dd/MM/yyyy") : "Chưa kết thúc")</td>
+                        <td>@item.TrangThai</td>
+                        <td>@(item.NgayTraTiepTheo.HasValue ? item.NgayTraTiepTheo.Value.ToString("dd/MM/yyyy") : "N/A")</td>
+                        <td>@item.GhiChu</td>
+                        <td class="text-center">
+                            <a asp-action="ChiTiet" asp-route-id="@item.MaNo" class="btn btn-sm btn-outline-primary rounded-pill px-3 me-2 hover-shadow transition-all">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@item.MaNo" class="btn btn-sm btn-outline-warning rounded-pill px-3 me-2 hover-shadow transition-all">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.MaNo" class="btn btn-sm btn-outline-danger rounded-pill px-3 me-2 hover-shadow transition-all">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                            <a asp-action="LichSuTraNo" asp-route-id="@item.MaNo" class="btn btn-sm btn-outline-info rounded-pill px-3 hover-shadow transition-all">
+                                <i class="fas fa-history"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    /* Đảm bảo header bảng có màu vàng Binance */
+    .table-gold {
+        background: linear-gradient(45deg, #F0B90B, #D9A602);
+    }
+
+    /* Đảm bảo các dòng trong bảng có hiệu ứng hover */
+    .table-hover tbody tr:hover {
+        background-color: #3C3C3C !important;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Đảm bảo viền giữa các ô trong bảng không làm rối mắt */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+        .table th, .table td {
+            border: 1px solid #3C3C3C;
+            vertical-align: middle;
+        }
+</style>

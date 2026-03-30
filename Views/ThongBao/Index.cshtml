@@ -1,0 +1,58 @@
+﻿@model List<QLTCCN.Models.Data.ThongBao>
+
+<h2 class="text-gold mb-4">🛎️ Danh sách thông báo</h2>
+
+@if (Model.Any())
+{
+    <div class="card bg-dark text-white shadow rounded-4 border border-gold p-3">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover table-bordered rounded-3">
+                <thead class="table-gold text-center">
+                    <tr>
+                        <th>📌 Loại</th>
+                        <th>📝 Nội dung</th>
+                        <th>📅 Ngày</th>
+                        <th>⚙️ Hành động</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center align-middle">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @switch (item.Loai)
+                                {
+                                    case "Nhắc nhở":
+                                        <span class="badge bg-info text-dark px-3 py-2 rounded-pill shadow-sm">@item.Loai</span>
+                                        break;
+                                    case "Cảnh báo":
+                                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill shadow-sm">@item.Loai</span>
+                                        break;
+                                    case "Cập nhật":
+                                        <span class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm">@item.Loai</span>
+                                        break;
+                                    default:
+                                        <span class="badge bg-secondary px-3 py-2 rounded-pill">@item.Loai</span>
+                                        break;
+                                }
+                            </td>
+                            <td class="text-start">@item.NoiDung</td>
+                            <td>@item.Ngay.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                <form asp-action="MarkAsRead" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@item.MaThongBao" />
+                                    <button type="submit" class="btn btn-sm btn-outline-light rounded-pill me-1">✔ Đã đọc</button>
+                                </form>
+                                <a asp-action="Delete" asp-route-id="@item.MaThongBao" class="btn btn-sm btn-danger rounded-pill">🗑 Xóa</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info shadow-sm mt-4">📭 Không có thông báo nào.</div>
+}

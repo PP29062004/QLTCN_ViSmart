@@ -1,0 +1,69 @@
+﻿@model QLTCCN.Models.Data.GiaoDich
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Chỉnh Sửa Giao Dịch";
+}
+
+<div class="card shadow-lg rounded-4 p-4 bg-dark text-light animate__animated animate__fadeIn">
+    <h2 class="mb-4 text-warning">✏️ Chỉnh Sửa Giao Dịch</h2>
+
+    <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" asp-for="MaGiaoDich" />
+        <input type="hidden" asp-for="MaNguoiDung" />
+
+        <div class="form-floating mb-3">
+            <input asp-for="SoTien" class="form-control" type="number" step="0.01" min="0.01"
+                   value="@Model.SoTien.ToString("F2", CultureInfo.InvariantCulture)" placeholder="Số tiền" required />
+            <label asp-for="SoTien">💰 Số tiền (VNĐ)</label>
+            <span asp-validation-for="SoTien" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label text-light">📂 Loại giao dịch</label>
+            <select asp-for="LoaiGiaoDich" class="form-select" asp-items="ViewBag.LoaiGiaoDich" required>
+                <option value="">-- Chọn loại --</option>
+            </select>
+            <span asp-validation-for="LoaiGiaoDich" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label text-light">🏦 Tài khoản</label>
+            <select asp-for="MaTaiKhoan" class="form-select" asp-items="ViewBag.TaiKhoan" required>
+                <option value="">-- Chọn tài khoản --</option>
+            </select>
+            <span asp-validation-for="MaTaiKhoan" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label text-light">🗂️ Danh mục</label>
+            <select asp-for="MaDanhMuc" class="form-select" asp-items="ViewBag.DanhMuc" required>
+                <option value="">-- Chọn danh mục --</option>
+            </select>
+            <span asp-validation-for="MaDanhMuc" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="NgayGiaoDich" class="form-control" type="date" required />
+            <label asp-for="NgayGiaoDich">📅 Ngày giao dịch</label>
+            <span asp-validation-for="NgayGiaoDich" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-4">
+            <input asp-for="GhiChu" class="form-control" placeholder="Ghi chú (tuỳ chọn)" />
+            <label asp-for="GhiChu">📝 Ghi chú</label>
+            <span asp-validation-for="GhiChu" class="text-danger"></span>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+            <button type="submit" class="btn btn-warning btn-lg text-dark">💾 Lưu thay đổi</button>
+            <a asp-action="Index" class="btn btn-secondary btn-lg">⬅️ Quay lại</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,186 @@
+﻿@model List<QLTCCN.Models.Data.DauTu>
+
+@{
+    ViewData["Title"] = "Danh sách đầu tư";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-gold fw-bold"><i class="fas fa-chart-line me-2"></i>Danh sách đầu tư</h2>
+        <a asp-action="Create" class="btn btn-gold rounded-pill px-4 py-2 fw-semibold hover-shadow transition-all">
+            <i class="fas fa-plus me-2"></i>Thêm đầu tư
+        </a>
+    </div>
+
+    <!-- Form bộ lọc -->
+    <div class="card mb-4 shadow-lg border-0 hover-shadow" style="background-color: #1e1e1e; color: #f0f0f0;">
+        <div class="card-header py-3 bg-gradient" style="background: linear-gradient(45deg, #2B2B2B, #3C3C3C);">
+            <h4 class="mb-0 text-gold fw-semibold"><i class="fas fa-filter me-2"></i>Bộ lọc</h4>
+        </div>
+        <div class="card-body p-4">
+            <form asp-action="Index" method="get" class="d-flex align-items-end gap-4 flex-wrap">
+                <div class="form-group" style="min-width: 200px;">
+                    <label for="startDate" class="form-label fw-semibold text-white mb-2">Từ ngày</label>
+                    <input type="date" name="startDate" id="startDate" class="form-control bg-dark text-white border-gold rounded-pill px-3 py-2 shadow-sm transition-all" value="@ViewBag.StartDate" />
+                </div>
+                <div class="form-group" style="min-width: 200px;">
+                    <label for="endDate" class="form-label fw-semibold text-white mb-2">Đến ngày</label>
+                    <input type="date" name="endDate" id="endDate" class="form-control bg-dark text-white border-gold rounded-pill px-3 py-2 shadow-sm transition-all" value="@ViewBag.EndDate" />
+                </div>
+                <div class="form-group" style="min-width: 200px;">
+                    <label for="maLoaiDauTu" class="form-label fw-semibold text-white mb-2">Loại đầu tư</label>
+                    <select name="maLoaiDauTu" id="maLoaiDauTu" class="form-select bg-dark text-white border-gold rounded-pill px-3 py-2 shadow-sm transition-all">
+                        <option value="">Tất cả</option>
+                        @foreach (var item in ViewBag.LoaiDauTuList)
+                        {
+                            <option value="@item.Value" selected="@(item.Value == ViewBag.MaLoaiDauTu?.ToString() ? "selected" : null)">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-gold rounded-pill px-4 py-2 fw-semibold hover-shadow transition-all">
+                        <i class="fas fa-filter me-2"></i>Lọc
+                    </button>
+                </div>
+                <div class="form-group">
+                    <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 py-2 hover-shadow transition-all">
+                        <i class="fas fa-times me-2"></i>Xóa bộ lọc
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Biểu đồ lợi nhuận -->
+    <div class="card mb-4 shadow-lg border-0 hover-shadow" style="background-color: #1e1e1e;">
+        <div class="card-header py-3 bg-gradient" style="background: linear-gradient(45deg, #2B2B2B, #3C3C3C);">
+            <h4 class="mb-0 text-gold fw-semibold"><i class="fas fa-chart-line me-2"></i>Biểu đồ lợi nhuận/lỗ</h4>
+        </div>
+        <div class="card-body p-4">
+            @if (Model.Any())
+            {
+                <canvas id="loiNhuanChart" style="max-height: 400px;"></canvas>
+            }
+            else
+            {
+                <p class="text-muted text-center"><i class="fas fa-exclamation-circle me-2"></i>Chưa có khoản đầu tư nào để hiển thị biểu đồ.</p>
+            }
+        </div>
+    </div>
+
+    <!-- Danh sách đầu tư -->
+    <div class="table-responsive">
+        <table class="table table-hover table-dark rounded shadow-sm">
+            <thead class="table-gold text-dark">
+                <tr class="text-center">
+                    <th>Loại đầu tư</th>
+                    <th>Giá trị ban đầu</th>
+                    <th>Giá trị hiện tại</th>
+                    <th>Lợi nhuận/Lỗ</th>
+                    <th>Ngày đầu tư</th>
+                    <th>Ngày kết thúc</th>
+                    <th>Trạng thái</th>
+                    <th>Ghi chú</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody class="text-white">
+                @foreach (var item in Model)
+                {
+                    <tr class="transition-all">
+                        <td>@item.LoaiDauTu?.TenLoai</td>
+                        <td>@item.GiaTri.ToString("C")</td>
+                        <td>@item.GiaTriHienTai.ToString("C")</td>
+                        <td>
+                            @{
+                                var loiNhuan = item.GiaTriHienTai - item.GiaTri;
+                                var mau = loiNhuan >= 0 ? "text-success" : "text-danger";
+                            }
+                            <span class="@mau">@loiNhuan.ToString("C")</span>
+                        </td>
+                        <td>@item.Ngay.ToString("dd/MM/yyyy")</td>
+                        <td>@(item.NgayKetThuc.HasValue ? item.NgayKetThuc.Value.ToString("dd/MM/yyyy") : "Chưa kết thúc")</td>
+                        <td>@item.TrangThai</td>
+                        <td>@item.GhiChu</td>
+                        <td class="text-center">
+                            <a asp-action="Edit" asp-route-id="@item.MaDauTu" class="btn btn-sm btn-outline-warning rounded-pill px-3 me-2 hover-shadow transition-all">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.MaDauTu" class="btn btn-sm btn-outline-danger rounded-pill px-3 hover-shadow transition-all">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Lấy dữ liệu từ ViewBag
+        const labels = @Html.Raw(ViewBag.Labels);
+        const loiNhuanData = @Html.Raw(ViewBag.LoiNhuanData);
+        const colors = @Html.Raw(ViewBag.Colors);
+
+        // Vẽ biểu đồ
+        const ctx = document.getElementById('loiNhuanChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Lợi nhuận/Lỗ - VNĐ',
+                    data: loiNhuanData,
+                    backgroundColor: colors,
+                    borderColor: colors.map(color => color.replace('0.6', '1')),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Lợi nhuận/Lỗ - VNĐ'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Khoản đầu tư'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    </script>
+    <style>
+        .table-gold {
+            background: linear-gradient(45deg, #F0B90B, #D9A602);
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #3C3C3C !important;
+            transition: background-color 0.3s ease;
+        }
+
+        .table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+            .table th, .table td {
+                border: 1px solid #3C3C3C;
+                vertical-align: middle;
+            }
+    </style>
+}

@@ -1,0 +1,75 @@
+﻿@model List<QLTCCN.Models.Data.DanhMuc>
+
+@{
+    ViewData["Title"] = "Danh sách danh mục";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-gold fw-bold"><i class="fas fa-list-alt me-2"></i>Danh sách danh mục</h2>
+        <a asp-action="Create" class="btn btn-gold rounded-pill px-4 py-2 fw-semibold hover-shadow transition-all">
+            <i class="fas fa-plus me-2"></i>Thêm danh mục
+        </a>
+    </div>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger rounded shadow-sm d-flex align-items-center">
+            <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="table-responsive">
+        <table class="table table-hover table-dark rounded shadow-sm">
+            <thead class="table-gold text-dark">
+                <tr class="text-center">
+                    <th>Tên danh mục</th>
+                    <th>Loại</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.TenDanhMuc</td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill @(item.Loai == "Thu" ? "bg-success text-dark" : "bg-danger text-dark")">@item.Loai</span>
+                        </td>
+                        <td class="text-center">
+                            <a asp-action="Edit" asp-route-id="@item.MaDanhMuc" class="btn btn-sm btn-outline-warning rounded-pill px-3 me-2 hover-shadow transition-all">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.MaDanhMuc" class="btn btn-sm btn-outline-danger rounded-pill px-3 hover-shadow transition-all">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<style>
+    /* Đảm bảo header bảng có màu vàng Binance */
+    .table-gold {
+        background: linear-gradient(45deg, #F0B90B, #D9A602);
+    }
+
+    /* Đảm bảo các dòng trong bảng có hiệu ứng hover */
+    .table-hover tbody tr:hover {
+        background-color: #3C3C3C !important;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Đảm bảo viền giữa các ô trong bảng không làm rối mắt */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+        .table th, .table td {
+            border: 1px solid #3C3C3C;
+            vertical-align: middle;
+        }
+</style>

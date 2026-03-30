@@ -1,0 +1,24 @@
+﻿@model QLTCCN.Models.Data.ThongBao
+
+<h2 class="text-danger mb-3">🗑️ Xóa thông báo</h2>
+
+<div class="card bg-dark text-white border border-danger shadow rounded-4 p-4">
+    <h4 class="mb-4">Bạn có chắc chắn muốn xóa thông báo này?</h4>
+
+    <dl class="row">
+        <dt class="col-sm-3">📌 Loại</dt>
+        <dd class="col-sm-9">@Model.Loai</dd>
+
+        <dt class="col-sm-3">📝 Nội dung</dt>
+        <dd class="col-sm-9">@Model.NoiDung</dd>
+
+        <dt class="col-sm-3">📅 Ngày</dt>
+        <dd class="col-sm-9">@Model.Ngay.ToString("dd/MM/yyyy HH:mm")</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post" class="mt-4">
+        <input type="hidden" asp-for="MaThongBao" />
+        <button type="submit" class="btn btn-danger rounded-pill px-4 me-2">✅ Xác nhận xóa</button>
+        <a asp-action="Index" class="btn btn-outline-light rounded-pill px-4">⬅ Quay lại</a>
+    </form>
+</div>

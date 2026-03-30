@@ -1,0 +1,16 @@
+﻿<h2 class="text-center text-gold mb-4">🔐 Đăng nhập</h2>
+
+<div class="card bg-dark text-white shadow-lg rounded-4 border border-gold p-4 mx-auto" style="max-width: 400px;">
+    <form asp-action="Login" method="post" novalidate>
+        <div class="mb-3">
+            <label class="form-label">📧 Email</label>
+            <input name="email" class="form-control bg-transparent border-light text-white" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">🔑 Mật khẩu</label>
+            <input name="password" type="password" class="form-control bg-transparent border-light text-white" required />
+        </div>
+        <button type="submit" class="btn btn-gold w-100">Đăng nhập</button>
+        <div asp-validation-summary="All" class="text-danger mt-3 small"></div>
+    </form>
+</div>

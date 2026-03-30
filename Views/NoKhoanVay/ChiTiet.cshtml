@@ -1,0 +1,116 @@
+﻿@model QLTCCN.Models.Data.NoKhoanVay
+
+@{
+    ViewData["Title"] = "Chi tiết khoản nợ/vay";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-gold fw-bold"><i class="fas fa-info-circle me-2"></i>Chi tiết khoản nợ/vay</h2>
+        <a asp-action="ThemTraNo" asp-route-id="@Model.MaNo" class="btn btn-gold rounded-pill px-4 py-2 fw-semibold hover-shadow transition-all">
+            <i class="fas fa-plus me-2"></i>Thêm lần trả nợ
+        </a>
+    </div>
+
+    <!-- Thông tin khoản nợ/vay -->
+    <div class="card shadow-lg border-0 hover-shadow mb-5" style="background-color: #1e1e1e; color: #f0f0f0;">
+        <div class="card-header py-3 bg-gradient" style="background: linear-gradient(45deg, #2B2B2B, #3C3C3C);">
+            <h4 class="mb-0 text-gold fw-semibold"><i class="fas fa-file-invoice-dollar me-2"></i>Thông tin khoản nợ/vay</h4>
+        </div>
+        <div class="card-body p-4">
+            <dl class="row pt-3 text-white">
+                <dt class="col-sm-3">Số tiền vay:</dt>
+                <dd class="col-sm-9 text-gold">@Model.SoTien.ToString("C")</dd>
+                <dt class="col-sm-3">Lãi suất:</dt>
+                <dd class="col-sm-9 text-gold">@Model.LaiSuat%</dd>
+                <dt class="col-sm-3">Kỳ hạn:</dt>
+                <dd class="col-sm-9 text-gold">@Model.KyHan tháng</dd>
+                <dt class="col-sm-3">Ngày bắt đầu:</dt>
+                <dd class="col-sm-9 text-gold">@Model.NgayBatDau.ToString("dd/MM/yyyy")</dd>
+                <dt class="col-sm-3">Ngày kết thúc:</dt>
+                <dd class="col-sm-9 text-gold">@(Model.NgayKetThuc.HasValue ? Model.NgayKetThuc.Value.ToString("dd/MM/yyyy") : "Chưa kết thúc")</dd>
+                <dt class="col-sm-3">Trạng thái:</dt>
+                <dd class="col-sm-9 text-gold">@Model.TrangThai</dd>
+                <dt class="col-sm-3">Ngày trả tiếp theo:</dt>
+                <dd class="col-sm-9 text-gold">@(Model.NgayTraTiepTheo.HasValue ? Model.NgayTraTiepTheo.Value.ToString("dd/MM/yyyy") : "N/A")</dd>
+                <dt class="col-sm-3">Ghi chú:</dt>
+                <dd class="col-sm-9 text-gold">@Model.GhiChu</dd>
+            </dl>
+
+            <h5 class="text-gold mt-4"><i class="fas fa-money-check-alt me-2"></i>Thông tin thanh toán</h5>
+            <dl class="row pt-3 text-white">
+                <dt class="col-sm-3">Tổng tiền phải trả (gốc + lãi):</dt>
+                <dd class="col-sm-9 text-gold">@ViewBag.TongTienPhaiTra.ToString("C")</dd>
+                <dt class="col-sm-3">Số tiền cần trả mỗi tháng:</dt>
+                <dd class="col-sm-9 text-gold">@ViewBag.TienTraMoiThang.ToString("C")</dd>
+                <dt class="col-sm-3">Tổng tiền đã trả:</dt>
+                <dd class="col-sm-9 text-gold">@ViewBag.TongTienDaTra.ToString("C")</dd>
+                <dt class="col-sm-3">Số tiền còn lại:</dt>
+                <dd class="col-sm-9 text-gold">@ViewBag.ConLaiPhaiTra.ToString("C")</dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Lịch sử trả nợ -->
+    <h4 class="text-gold fw-bold mb-4"><i class="fas fa-history me-2"></i>Lịch sử trả nợ</h4>
+    <div class="table-responsive">
+        <table class="table table-hover table-dark rounded shadow-sm">
+            <thead class="table-gold text-dark">
+                <tr class="text-center">
+                    <th>Số tiền trả</th>
+                    <th>Ngày trả</th>
+                    <th>Ghi chú</th>
+                </tr>
+            </thead>
+            <tbody class="text-white">
+                @if (Model.LichSuTraNos != null && Model.LichSuTraNos.Any())
+                {
+                    foreach (var item in Model.LichSuTraNos)
+                    {
+                        <tr class="transition-all">
+                            <td>@item.SoTienTra.ToString("C")</td>
+                            <td>@item.NgayTra.ToString("dd/MM/yyyy")</td>
+                            <td>@item.GhiChu</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" class="text-center text-muted"><i class="fas fa-exclamation-circle me-2"></i>Chưa có lịch sử trả nợ.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-start mt-4">
+        <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 py-2 hover-shadow transition-all">
+            <i class="fas fa-arrow-left me-2"></i>Quay lại
+        </a>
+    </div>
+</div>
+
+<style>
+    /* Đảm bảo header bảng có màu vàng Binance */
+    .table-gold {
+        background: linear-gradient(45deg, #F0B90B, #D9A602);
+    }
+
+    /* Đảm bảo các dòng trong bảng có hiệu ứng hover */
+    .table-hover tbody tr:hover {
+        background-color: #3C3C3C !important;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Đảm bảo viền giữa các ô trong bảng không làm rối mắt */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+        .table th, .table td {
+            border: 1px solid #3C3C3C;
+            vertical-align: middle;
+        }
+</style>

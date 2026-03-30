@@ -1,0 +1,42 @@
+﻿@model QLTCCN.Models.Data.MucTieu
+
+@{
+    ViewData["Title"] = "Xóa mục tiêu";
+}
+
+<div class="container bg-dark text-white rounded p-4 shadow mt-4">
+    <h2 class="mb-4 text-danger"><i class="bi bi-trash-fill"></i> Xóa mục tiêu</h2>
+
+    <h5>Bạn có chắc muốn xóa mục tiêu này?</h5>
+    <dl class="row">
+        <dt class="col-sm-3">🎯 Tên mục tiêu</dt>
+        <dd class="col-sm-9">@Model.TenMucTieu</dd>
+
+        <dt class="col-sm-3">📂 Danh mục</dt>
+        <dd class="col-sm-9">@Model.DanhMuc.TenDanhMuc</dd>
+
+        <dt class="col-sm-3">💰 Số tiền mục tiêu</dt>
+        <dd class="col-sm-9">@Model.SoTienMucTieu.ToString("C")</dd>
+
+        <dt class="col-sm-3">📈 Số tiền hiện tại</dt>
+        <dd class="col-sm-9">@Model.SoTienHienTai.ToString("C")</dd>
+
+        <dt class="col-sm-3">🕒 Hạn chót</dt>
+        <dd class="col-sm-9">@Model.HanChot.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-3">📝 Ghi chú</dt>
+        <dd class="col-sm-9">@Model.GhiChu</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="MaMucTieu" />
+        <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash3"></i> Xóa
+            </button>
+            <a asp-action="Index" class="btn btn-outline-light">
+                <i class="bi bi-arrow-left-circle"></i> Hủy
+            </a>
+        </div>
+    </form>
+</div>

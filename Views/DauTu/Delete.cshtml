@@ -1,0 +1,39 @@
+﻿@model QLTCCN.Models.Data.DauTu
+
+@{
+    ViewData["Title"] = "Xóa đầu tư";
+}
+
+<div class="container py-5">
+    <div class="card shadow-lg border-0 hover-shadow" style="background-color: #1e1e1e; color: #f0f0f0;">
+        <div class="card-header py-3 bg-gradient" style="background: linear-gradient(45deg, #FF0000, #CC0000);">
+            <h4 class="mb-0 text-white fw-semibold"><i class="fas fa-trash-alt me-2"></i>Xóa đầu tư</h4>
+        </div>
+        <div class="card-body p-4">
+            <h4 class="text-danger mb-4"><i class="fas fa-exclamation-triangle me-2"></i>Bạn có chắc chắn muốn xóa khoản đầu tư này?</h4>
+            <dl class="row pt-3 text-white">
+                <dt class="col-sm-3">Loại đầu tư:</dt>
+                <dd class="col-sm-9 text-gold">@Model.LoaiDauTu?.TenLoai</dd>
+                <dt class="col-sm-3">Giá trị ban đầu:</dt>
+                <dd class="col-sm-9 text-gold">@Model.GiaTri.ToString("C")</dd>
+                <dt class="col-sm-3">Giá trị hiện tại:</dt>
+                <dd class="col-sm-9 text-gold">@Model.GiaTriHienTai.ToString("C")</dd>
+                <dt class="col-sm-3">Ngày đầu tư:</dt>
+                <dd class="col-sm-9 text-gold">@Model.Ngay.ToString("dd/MM/yyyy")</dd>
+                <dt class="col-sm-3">Trạng thái:</dt>
+                <dd class="col-sm-9 text-gold">@Model.TrangThai</dd>
+            </dl>
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="MaDauTu" />
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 py-2 hover-shadow transition-all">
+                        <i class="fas fa-times me-2"></i>Hủy
+                    </a>
+                    <button type="submit" class="btn btn-danger rounded-pill px-4 py-2 fw-semibold hover-shadow transition-all">
+                        <i class="fas fa-trash-alt me-2"></i>Xóa
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

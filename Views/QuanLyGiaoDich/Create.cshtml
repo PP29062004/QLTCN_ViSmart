@@ -1,0 +1,71 @@
+﻿@model QLTCCN.Models.Data.GiaoDich
+
+@{
+    ViewData["Title"] = "Thêm Giao Dịch";
+}
+
+<div class="card shadow-lg rounded-4 p-4 bg-dark text-light animate__animated animate__fadeIn">
+    <h2 class="mb-4 text-warning">➕ Thêm Giao Dịch Mới</h2>
+
+    <form asp-action="Create" class="needs-validation" novalidate>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="SoTien" class="form-control" type="number" step="0.01" placeholder="Số tiền" required />
+            <label asp-for="SoTien">💰 Số tiền (VNĐ)</label>
+            <span asp-validation-for="SoTien" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label text-light">📂 Loại giao dịch</label>
+            <select asp-for="LoaiGiaoDich" class="form-select" asp-items="ViewBag.LoaiGiaoDich" required>
+                <option value="">-- Chọn loại --</option>
+            </select>
+            <span asp-validation-for="LoaiGiaoDich" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label text-light">🏦 Tài khoản</label>
+            <select asp-for="MaTaiKhoan" class="form-select" asp-items="ViewBag.TaiKhoan" required>
+                <option value="">-- Chọn tài khoản --</option>
+            </select>
+            <span asp-validation-for="MaTaiKhoan" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label text-light">🗂️ Danh mục</label>
+            <select asp-for="MaDanhMuc" class="form-select" asp-items="ViewBag.DanhMuc" required>
+                <option value="">-- Chọn danh mục --</option>
+            </select>
+            <span asp-validation-for="MaDanhMuc" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="NgayGiaoDich" class="form-control" type="date" required />
+            <label asp-for="NgayGiaoDich">📅 Ngày giao dịch</label>
+            <span asp-validation-for="NgayGiaoDich" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-4">
+            <input asp-for="GhiChu" class="form-control" placeholder="Ghi chú (tuỳ chọn)" />
+            <label asp-for="GhiChu">📝 Ghi chú</label>
+            <span asp-validation-for="GhiChu" class="text-danger"></span>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-success btn-lg">
+                💾 Lưu giao dịch
+            </button>
+        </div>
+    </form>
+
+    <div class="mt-3 text-end">
+        <a asp-action="Index" class="btn btn-sm btn-outline-light">⬅️ Quay lại danh sách</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

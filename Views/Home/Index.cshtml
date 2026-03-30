@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4 text-gold text-3d">Vi-Smart</h1>
+    <p>Website quản lý tài chính cá nhân số 1 Việt Nam - <a href="http://localhost:5253/Home/Privacy"> Chính sách</a></p>
+
+    <!-- Container sàn giao dịch -->
+    <div class="trading-floor-container"></div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            startTradingFloorAnimation();
+        });
+    </script>
+}

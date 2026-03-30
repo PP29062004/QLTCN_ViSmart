@@ -1,0 +1,67 @@
+﻿@model QLTCCN.Models.Data.ApplicationUser
+
+<div class="container my-5">
+    <h2 class="text-center fw-bold mb-5" style="color: #f0b90b;"><i class="fas fa-user-circle me-2"></i>Chi tiết người dùng</h2>
+
+    <!-- Card chi tiết người dùng -->
+    <div class="card shadow-lg border-0 hover-shadow" style="background-color: #1e1e1e; color: #f0f0f0;">
+        <div class="card-header py-3 bg-gradient" style="background: linear-gradient(45deg, #2B2B2B, #3C3C3C);">
+            <h4 class="mb-0 text-gold fw-semibold"><i class="fas fa-info-circle me-2"></i>Thông tin người dùng</h4>
+        </div>
+        <div class="card-body p-4">
+            <dl class="row mb-0">
+                <dt class="col-sm-3 fw-semibold text-white">Email</dt>
+                <dd class="col-sm-9 text-white">@Model.Email</dd>
+                <dt class="col-sm-3 fw-semibold text-white">Họ và tên</dt>
+                <dd class="col-sm-9 text-white">@Model.FullName</dd>
+                <dt class="col-sm-3 fw-semibold text-white">Vai trò</dt>
+                <dd class="col-sm-9 text-white">@string.Join(", ", ViewBag.Roles)</dd>
+            </dl>
+        </div>
+        <div class="card-footer bg-dark text-center py-3">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning rounded-pill px-4 py-2 fw-semibold hover-shadow transition-all me-2">
+                <i class="fas fa-edit me-2"></i>Sửa
+            </a>
+            <a asp-action="Index" class="btn btn-secondary rounded-pill px-4 py-2 fw-semibold hover-shadow transition-all">
+                <i class="fas fa-arrow-left me-2"></i>Quay lại
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-warning {
+        background-color: #ffc107;
+        color: #1e1e1e;
+        border: none;
+    }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            color: #1e1e1e;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+        border: none;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            color: #fff;
+        }
+
+    .text-gold {
+        color: #F0B90B !important;
+    }
+
+    .hover-shadow:hover {
+        box-shadow: 0 4px 15px rgba(240, 185, 11, 0.3);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .transition-all {
+        transition: all 0.3s ease;
+    }
+</style>

@@ -1,0 +1,74 @@
+﻿@model QLTCCN.Models.Data.MucTieu
+
+<div class="container my-5">
+    <h2 class="text-center fw-bold mb-5" style="color: #f0b90b;"><i class="fas fa-bullseye me-2"></i>Chi tiết mục tiêu</h2>
+
+    <!-- Card chi tiết mục tiêu -->
+    <div class="card shadow-lg border-0 hover-shadow" style="background-color: #1e1e1e; color: #f0f0f0;">
+        <div class="card-header py-3 bg-gradient" style="background: linear-gradient(45deg, #2B2B2B, #3C3C3C);">
+            <h4 class="mb-0 text-gold fw-semibold"><i class="fas fa-info-circle me-2"></i>Thông tin mục tiêu</h4>
+        </div>
+        <div class="card-body p-4">
+            <dl class="row mb-0">
+                <dt class="col-sm-3 fw-semibold text-white">Tên mục tiêu</dt>
+                <dd class="col-sm-9 text-white">@Model.TenMucTieu</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Số tiền mục tiêu</dt>
+                <dd class="col-sm-9 text-white">@Model.SoTienMucTieu.ToString("N0") VNĐ</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Số tiền hiện tại</dt>
+                <dd class="col-sm-9 @(Model.SoTienHienTai >= 0 ? "text-success" : "text-danger")">@Model.SoTienHienTai.ToString("N0") VNĐ</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Hạn chót</dt>
+                <dd class="col-sm-9 text-white">@Model.HanChot.ToString("dd/MM/yyyy")</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Trạng thái</dt>
+                <dd class="col-sm-9 text-white">@Model.TrangThai</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Danh mục</dt>
+                <dd class="col-sm-9 text-white">@Model.DanhMuc?.TenDanhMuc</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Người dùng</dt>
+                <dd class="col-sm-9 text-white">@Model.NguoiDung?.FullName (@Model.NguoiDung?.Email)</dd>
+
+                <dt class="col-sm-3 fw-semibold text-white">Ghi chú</dt>
+                <dd class="col-sm-9 text-white">@Model.GhiChu</dd>
+            </dl>
+        </div>
+        <div class="card-footer bg-dark text-center py-3">
+            <a asp-action="Index" class="btn btn-gold rounded-pill px-4 py-2 fw-semibold hover-shadow transition-all">
+                <i class="fas fa-arrow-left me-2"></i>Quay lại
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-gold {
+        background-color: #F0B90B;
+        color: #1e1e1e;
+        border: none;
+    }
+
+        .btn-gold:hover {
+            background-color: #d9a00a;
+            color: #1e1e1e;
+        }
+
+    .border-gold {
+        border-color: #F0B90B !important;
+    }
+
+    .text-gold {
+        color: #F0B90B !important;
+    }
+
+    .hover-shadow:hover {
+        box-shadow: 0 4px 15px rgba(240, 185, 11, 0.3);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .transition-all {
+        transition: all 0.3s ease;
+    }
+</style>

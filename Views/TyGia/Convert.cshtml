@@ -1,0 +1,45 @@
+﻿<h2 class="text-gold mb-4">🔄 Chuyển đổi tiền tệ</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger shadow-sm">@ViewBag.Error</div>
+}
+
+@if (ViewBag.Result != null)
+{
+    <div class="alert alert-success shadow-sm">@ViewBag.Result</div>
+}
+
+<div class="card bg-dark text-white shadow-lg rounded-4 border border-gold mb-4">
+    <div class="card-header bg-gradient-gold text-black rounded-top-4">
+        <h4 class="mb-0">🔁 Chuyển đổi tiền tệ</h4>
+    </div>
+    <div class="card-body p-4">
+        <form asp-action="Convert" method="post">
+            <div class="mb-3">
+                <label for="fromCurrency" class="form-label">Từ tiền tệ:</label>
+                <select name="fromCurrency" id="fromCurrency" class="form-select rounded-pill">
+                    @foreach (var currency in ViewBag.Currencies)
+                    {
+                        <option value="@currency">@currency</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="toCurrency" class="form-label">Sang tiền tệ:</label>
+                <select name="toCurrency" id="toCurrency" class="form-select rounded-pill">
+                    @foreach (var currency in ViewBag.Currencies)
+                    {
+                        <option value="@currency" selected="@(currency == "VND" ? "selected" : null)">@currency</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="amount" class="form-label">Số tiền:</label>
+                <input type="number" name="amount" id="amount" class="form-control rounded-pill" step="0.01" min="0" required />
+            </div>
+            <button type="submit" class="btn btn-warning rounded-pill px-4 me-2">💸 Chuyển đổi</button>
+            <a asp-action="Index" class="btn btn-outline-light rounded-pill px-4">⬅ Quay lại</a>
+        </form>
+    </div>
+</div>

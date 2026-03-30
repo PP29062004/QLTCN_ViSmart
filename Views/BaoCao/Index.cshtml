@@ -1,0 +1,219 @@
+﻿@model QLTCCN.Models.ViewModels.BaoCaoViewModel
+
+<div class="container my-5">
+    <h2 class="text-center fw-bold mb-5" style="color: #f0b90b;">📊 Báo cáo tổng quan</h2>
+
+    <!-- Chọn thời gian -->
+    <div class="card mb-5 shadow-lg border-0 hover-shadow" style="background-color: #1e1e1e; color: #f0f0f0;">
+        <div class="card-header py-3 bg-gradient" style="background: linear-gradient(45deg, #2B2B2B, #3C3C3C);">
+            <h4 class="mb-0 text-gold fw-semibold"><i class="fas fa-calendar-alt me-2"></i>Chọn thời gian</h4>
+        </div>
+        <div class="card-body p-4">
+            <form asp-action="Index" method="get" class="d-flex align-items-end gap-4 flex-wrap justify-content-center">
+                <!-- Tháng -->
+                <div class="form-group" style="min-width: 150px;">
+                    <label for="thang" class="form-label fw-semibold text-white mb-2">Tháng</label>
+                    <select name="thang" id="thang" class="form-select bg-dark text-white border-gold rounded-pill px-3 py-2 shadow-sm transition-all">
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i" selected="@(i == Model.Thang ? "selected" : null)">@i</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Năm -->
+                <div class="form-group" style="min-width: 150px;">
+                    <label for="nam" class="form-label fw-semibold text-white mb-2">Năm</label>
+                    <select name="nam" id="nam" class="form-select bg-dark text-white border-gold rounded-pill px-3 py-2 shadow-sm transition-all">
+                        @for (int i = DateTime.Now.Year - 5; i <= DateTime.Now.Year + 5; i++)
+                        {
+                            <option value="@i" selected="@(i == Model.Nam ? "selected" : null)">@i</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Nút Xem báo cáo -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-gold rounded-pill px-4 py-2 fw-semibold hover-shadow transition-all">
+                        <i class="fas fa-eye me-2"></i>Xem báo cáo
+                    </button>
+                </div>
+
+                <!-- Nút Xuất PDF -->
+                <div class="form-group">
+                    <button type="button" id="exportPdfBtn" class="btn btn-gold rounded-pill px-4 py-2 fw-semibold hover-shadow transition-all">
+                        <i class="fas fa-file-pdf me-2"></i>Xuất PDF
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tổng quan -->
+    <div class="card mb-5 shadow-lg border-0 hover-shadow" style="background-color: #1e1e1e; color: #f0f0f0;">
+        <div class="card-header py-3 bg-gradient" style="background: linear-gradient(45deg, #2B2B2B, #3C3C3C);">
+            <h4 class="mb-0 text-gold fw-semibold"><i class="fas fa-wallet me-2"></i>Tài chính tháng @Model.Thang/@Model.Nam</h4>
+        </div>
+        <div class="card-body p-4">
+            <div class="row g-4">
+                <!-- Tổng chi tiêu -->
+                <div class="col-md-4">
+                    <div class="card bg-dark border-gold shadow-sm hover-shadow transition-all">
+                        <div class="card-body text-center p-3">
+                            <i class="fas fa-shopping-cart fa-2x mb-3 text-danger"></i>
+                            <h5 class="fw-semibold text-white mb-2">Tổng chi tiêu</h5>
+                            <p class="fs-4 text-danger">@Model.TongChiTieu.ToString("N0") VNĐ</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nợ phải trả -->
+                <div class="col-md-4">
+                    <div class="card bg-dark border-gold shadow-sm hover-shadow transition-all">
+                        <div class="card-body text-center p-3">
+                            <i class="fas fa-hand-holding-usd fa-2x mb-3 text-danger"></i>
+                            <h5 class="fw-semibold text-white mb-2">Nợ phải trả</h5>
+                            <p class="fs-4 text-danger">@Model.NoPhaiTra.ToString("N0") VNĐ</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Số tiền tiết kiệm -->
+                <div class="col-md-4">
+                    <div class="card bg-dark border-gold shadow-sm hover-shadow transition-all">
+                        <div class="card-body text-center p-3">
+                            <i class="fas fa-piggy-bank fa-2x mb-3 @(Model.SoTienTietKiem >= 0 ? "text-success" : "text-danger")"></i>
+                            <h5 class="fw-semibold text-white mb-2">Số tiền tiết kiệm</h5>
+                            <p class="fs-4 @(Model.SoTienTietKiem >= 0 ? "text-success" : "text-danger")">@Model.SoTienTietKiem.ToString("N0") VNĐ</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng thu nhập -->
+                <div class="col-md-6">
+                    <div class="card bg-dark border-gold shadow-sm hover-shadow transition-all">
+                        <div class="card-body text-center p-3">
+                            <i class="fas fa-money-bill-wave fa-2x mb-3 text-success"></i>
+                            <h5 class="fw-semibold text-white mb-2">Tổng thu nhập</h5>
+                            <p class="fs-4 text-success">@Model.TongThuNhap.ToString("N0") VNĐ</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Lợi nhuận đầu tư -->
+                <div class="col-md-6">
+                    <div class="card bg-dark border-gold shadow-sm hover-shadow transition-all">
+                        <div class="card-body text-center p-3">
+                            <i class="fas fa-chart-line fa-2x mb-3 @(Model.LoiNhuanDauTu >= 0 ? "text-success" : "text-danger")"></i>
+                            <h5 class="fw-semibold text-white mb-2">Lợi nhuận đầu tư</h5>
+                            <p class="fs-4 @(Model.LoiNhuanDauTu >= 0 ? "text-success" : "text-danger")">@Model.LoiNhuanDauTu.ToString("N0") VNĐ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Biểu đồ -->
+    <div class="row g-4">
+        <!-- Thu nhập vs Chi tiêu -->
+        <div class="col-md-6">
+            <div class="card mb-4 shadow-lg border-0 hover-shadow" style="background-color: #1e1e1e;">
+                <div class="card-header py-3 bg-gradient" style="background: linear-gradient(45deg, #2B2B2B, #3C3C3C);">
+                    <h4 class="mb-0 text-gold fw-semibold"><i class="fas fa-chart-bar me-2"></i>Thu nhập vs Chi tiêu</h4>
+                </div>
+                <div class="card-body p-4">
+                    <canvas id="thuChiChart" style="max-height: 350px;"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- Chi tiêu theo danh mục -->
+        <div class="col-md-6">
+            <div class="card mb-4 shadow-lg border-0 hover-shadow" style="background-color: #1e1e1e;">
+                <div class="card-header py-3 bg-gradient" style="background: linear-gradient(45deg, #2B2B2B, #3C3C3C);">
+                    <h4 class="mb-0 text-gold fw-semibold"><i class="fas fa-lightbulb me-2"></i>Chi tiêu theo danh mục</h4>
+                </div>
+                <div class="card-body p-4">
+                    @if (!string.IsNullOrEmpty(Model.DanhMucData) && Model.DanhMucData != "[]")
+                    {
+                        <canvas id="danhMucChart" style="max-height: 350px;"></canvas>
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center"><i class="fas fa-exclamation-circle me-2"></i>Chưa có chi tiêu trong tháng này.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mục tiêu -->
+    <div class="card mb-5 shadow-lg border-0 hover-shadow" style="background-color: #1e1e1e;">
+        <div class="card-header py-3 bg-gradient" style="background: linear-gradient(45deg, #2B2B2B, #3C3C3C);">
+            <h4 class="mb-0 text-gold fw-semibold"><i class="fas fa-bullseye me-2"></i>Mục tiêu tháng @Model.Thang/@Model.Nam</h4>
+        </div>
+        <div class="card-body p-4 text-white">
+            @if (Model.TienDoMucTieu.Any())
+            {
+                <div class="row g-4">
+                    @foreach (var item in Model.TienDoMucTieu)
+                    {
+                        var percent = (int)item.TienDo;
+                        var journeySteps = percent / 20;
+                        <div class="col-md-6">
+                            <div class="card bg-dark border-gold shadow-sm hover-shadow transition-all p-4 rounded-4">
+                                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                    <div style="flex: 1 1 55%;">
+                                        <h5 class="text-gold fw-semibold mb-2"><i class="fas fa-flag-checkered me-2"></i>@item.TenMucTieu</h5>
+                                        <p class="mb-3 text-white"><i class="fas fa-chart-line me-2"></i>Tiến độ: <strong class="text-gold">@item.TienDo.ToString("F2")%</strong></p>
+                                        <a href="/MucTieu/Progress" class="btn btn-gold rounded-pill px-4 py-2 fw-semibold hover-shadow transition-all">
+                                            <i class="fas fa-info-circle me-2"></i>Chi tiết tiến độ
+                                        </a>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-end mt-3 mt-md-0" style="flex: 1 1 40%;">
+                                        <span class="text-gold me-2"><i class="fas fa-walking"></i></span>
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= journeySteps)
+                                            {
+                                                <span class="step active-step mx-1"></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="step mx-1"></span>
+                                            }
+                                        }
+                                        <span class="text-gold ms-2"><i class="fas fa-flag-checkered"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted text-center"><i class="fas fa-exclamation-circle me-2"></i>Không có mục tiêu nào trong tháng này.</p>
+            }
+        </div>
+    </div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const thuChiData = @Html.Raw(Model.ThuChiData);
+            const danhMucLabels = @Html.Raw(Model.DanhMucLabels);
+            const danhMucData = @Html.Raw(Model.DanhMucData);
+            initializeCharts(thuChiData, danhMucLabels, danhMucData);
+        });
+    </script>
+    <style>
+        .step {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #3C3C3C;
+            transition: background-color 0.5s ease;
+        }
+
+        .active-step {
+            background-color: #F0B90B;
+            box-shadow: 0 0 10px #F0B90B;
+        }
+    </style>
+}
